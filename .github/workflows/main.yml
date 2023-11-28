@@ -1,7 +1,7 @@
 name: CI
 
-# on: [push, pull_request]
-on: workflow_dispatch
+on: [push, pull_request]
+# on: workflow_dispatch
 
 jobs:
   build:
@@ -54,8 +54,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v3
+    # - name: Checkout Repository
+    #   uses: actions/checkout@v3
         
     - name: Restore Cached Toolchain
       uses: actions/cache@v3
@@ -69,6 +69,7 @@ jobs:
       run: |
         # Your steps that use the cached toolchain
         echo "Using cached toolchain..."
+        ls ./doc
         ls .
         ls toolchain
         cat toolchain/cache.txt
