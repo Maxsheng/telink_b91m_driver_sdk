@@ -50,7 +50,7 @@ jobs:
       name: build cache toolchain
       run: |
         echo "restore toolchain cache successfully"
-        exit 0
+        return 0
         
     - name: download and decompression toolchain
       run: |
