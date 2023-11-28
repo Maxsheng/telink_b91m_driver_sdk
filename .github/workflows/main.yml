@@ -50,7 +50,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: nds32le-elf-mculib-v5f
-        key: ${{ runner.os }}-nds32le-elf-mculib-v5f-${{ hashFiles('./github/nds_toolchain_version') }}
+        key: ${{ runner.os }}-nds32le-elf-mculib-v5f-${{ hashFiles('./.github/nds_toolchain_version') }}
   
   use_cache:
     runs-on: ubuntu-latest
@@ -65,7 +65,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: nds32le-elf-mculib-v5f
-        key: ${{ runner.os }}-nds32le-elf-mculib-v5f-${{ hashFiles('./github/nds_toolchain_version') }}
+        key: ${{ runner.os }}-nds32le-elf-mculib-v5f-${{ hashFiles('./.github/nds_toolchain_version') }}
         restore-keys: |
           ${{ runner.os }}-nds32le-elf-mculib-v5f-
 
