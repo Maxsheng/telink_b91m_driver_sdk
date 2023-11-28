@@ -1,67 +1,71 @@
 name: CI
 
-on: [push, pull_request]
-# on: workflow_dispatch
+# on: [push, pull_request]
+on: workflow_dispatch
 
 jobs:
-  build:
+#   build:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Checkout Repository
+#       uses: actions/checkout@v3
+
+#     - name: Print Hello World
+#       run: |
+#         echo "hello world"
+#         echo "test123" > doc/test.txt
+#         ls .
+#     - run: cmake --version
+
+#     - name: upload artifacts
+#       uses: actions/upload-artifact@v3
+#       with:
+#         name: dist-without-markdown
+#         path: |
+#           doc
+#           !doc/**/*.md
+#         retention-days: 5
+        
+  build_toolchain_cache:
+    runs-on: ubuntu-latest
+    
+    steps:
+    # - name: Checkout Repository
+    #   uses: actions/checkout@v3
+
+    - name: download and decompression toolchain
+      run: |
+        # Your build steps here
+        pwd
+        ls .
+        wget -O riscv.tar https://github.com/andestech/Andes-Development-Kit/releases/download/ast-v3_2_3-release-linux/nds32le-elf-mculib-v5f.txz
+        ls .
+        tar xf riscv.tar
+        ls .
+        cd nds32le-elf-mculib-v5f
+        ls .
+
+    - name: Cache Toolchain
+      uses: actions/cache@v3
+      with:
+        path: nds32le-elf-mculib-v5f
+        key: ${{ runner.os }}-nds32le-elf-mculib-v5f-${{ hashFiles('./github/nds_toolchain_version') }}
+  
+  use_cache:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v3
 
-    - name: Print Hello World
-      run: |
-        echo "hello world"
-        echo "test123" > doc/test.txt
-        ls .
-    - run: cmake --version
-
-    - name: upload artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: dist-without-markdown
-        path: |
-          doc
-          !doc/**/*.md
-        retention-days: 5
-        
-  # build_cache:
-  #   runs-on: ubuntu-latest
+    - run : ls .
     
-  #   steps:
-  #   # - name: Checkout Repository
-  #   #   uses: actions/checkout@v4
-
-  #   - name: Build and Cache Toolchain
-  #     run: |
-  #       # Your build steps here
-  #       ls
-  #       pwd
-  #       echo "Building toolchain..."
-  #       mkdir -p toolchain
-  #       echo "testing cache" > toolchain/cache.txt
-  #       # ... more build steps ...
-
-  #   - name: Cache Toolchain
-  #     uses: actions/cache@v3
-  #     with:
-  #       path: toolchain
-  #       key: ${{ runner.os }}-toolchain-${{ hashFiles('toolchain') }}
-  
-  use_cache:
-    runs-on: ubuntu-latest
-
-    steps:
-    # - name: Checkout Repository
-    #   uses: actions/checkout@v3
-        
     - name: Restore Cached Toolchain
       uses: actions/cache@v3
       with:
-        path: toolchain
-        key: ${{ runner.os }}-toolchain-${{ hashFiles('toolchain') }}
+        path: nds32le-elf-mculib-v5f
+        key: ${{ runner.os }}-nds32le-elf-mculib-v5f-${{ hashFiles('./github/nds_toolchain_version') }}
         restore-keys: |
           ${{ runner.os }}-toolchain-
 
@@ -69,7 +73,5 @@ jobs:
       run: |
         # Your steps that use the cached toolchain
         echo "Using cached toolchain..."
-        ls ./doc
         ls .
-        ls toolchain
-        cat toolchain/cache.txt
+        ls nds32le-elf-mculib-v5f
