@@ -34,17 +34,34 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v3
 
+    - name: Restore Cached Toolchain
+      id: Restore_Cached_Toolchain
+      uses: actions/cache@v3
+      with:
+        path: nds32le-elf-mculib-v5f
+        key: ${{ runner.os }}-nds32le-elf-mculib-v5f-${{ hashFiles('./.github/nds_toolchain_version') }}
+        restore-keys: |
+          ${{ runner.os }}-nds32le-elf-mculib-v5f-
+     
+    - if: ${{ steps.cache-npm.outputs.cache-hit == 'true' }}
+      name: build cache toolchain
+      continue-on-error: true
+      run: |
+        echo "restore toolchain cache successfully"
+        exit 0
+        
     - name: download and decompression toolchain
       run: |
-        # Your build steps here
-        pwd
-        ls .
-        wget -O riscv.tar https://github.com/andestech/Andes-Development-Kit/releases/download/ast-v3_2_3-release-linux/nds32le-elf-mculib-v5f.txz
-        ls .
-        tar xf riscv.tar
-        ls .
-        cd nds32le-elf-mculib-v5f
-        ls .
+        echo "download and decompression toolchain"
+        # # Your build steps here
+        # pwd
+        # ls .
+        # wget -O riscv.tar https://github.com/andestech/Andes-Development-Kit/releases/download/ast-v3_2_3-release-linux/nds32le-elf-mculib-v5f.txz
+        # ls .
+        # tar xf riscv.tar
+        # ls .
+        # cd nds32le-elf-mculib-v5f
+        # ls .
 
     - name: Cache Toolchain
       uses: actions/cache@v3
@@ -52,26 +69,26 @@ jobs:
         path: nds32le-elf-mculib-v5f
         key: ${{ runner.os }}-nds32le-elf-mculib-v5f-${{ hashFiles('./.github/nds_toolchain_version') }}
   
-  use_cache:
-    runs-on: ubuntu-latest
+  # use_cache:
+  #   runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v3
+  #   steps:
+  #   - name: Checkout Repository
+  #     uses: actions/checkout@v3
 
-    - run : ls .
+  #   - run : ls .
     
-    - name: Restore Cached Toolchain
-      uses: actions/cache@v3
-      with:
-        path: nds32le-elf-mculib-v5f
-        key: ${{ runner.os }}-nds32le-elf-mculib-v5f-${{ hashFiles('./.github/nds_toolchain_version') }}
-        restore-keys: |
-          ${{ runner.os }}-nds32le-elf-mculib-v5f-
+  #   - name: Restore Cached Toolchain
+  #     uses: actions/cache@v3
+  #     with:
+  #       path: nds32le-elf-mculib-v5f
+  #       key: ${{ runner.os }}-nds32le-elf-mculib-v5f-${{ hashFiles('./.github/nds_toolchain_version') }}
+  #       restore-keys: |
+  #         ${{ runner.os }}-nds32le-elf-mculib-v5f-
 
-    - name: Use Cached Toolchain
-      run: |
-        # Your steps that use the cached toolchain
-        echo "Using cached toolchain..."
-        ls .
-        ls nds32le-elf-mculib-v5f
+  #   - name: Use Cached Toolchain
+  #     run: |
+  #       # Your steps that use the cached toolchain
+  #       echo "Using cached toolchain..."
+  #       ls .
+  #       ls nds32le-elf-mculib-v5f
