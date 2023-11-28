@@ -31,8 +31,8 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    # - name: Checkout Repository
-    #   uses: actions/checkout@v3
+    - name: Checkout Repository
+      uses: actions/checkout@v3
 
     - name: download and decompression toolchain
       run: |
@@ -67,7 +67,7 @@ jobs:
         path: nds32le-elf-mculib-v5f
         key: ${{ runner.os }}-nds32le-elf-mculib-v5f-${{ hashFiles('./github/nds_toolchain_version') }}
         restore-keys: |
-          ${{ runner.os }}-toolchain-
+          ${{ runner.os }}-nds32le-elf-mculib-v5f-
 
     - name: Use Cached Toolchain
       run: |
