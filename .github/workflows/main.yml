@@ -26,25 +26,48 @@ jobs:
           !doc/**/*.md
         retention-days: 5
         
-  build_cache:
-    runs-on: ubuntu-latest
+  # build_cache:
+  #   runs-on: ubuntu-latest
     
+  #   steps:
+  #   # - name: Checkout Repository
+  #   #   uses: actions/checkout@v4
+
+  #   - name: Build and Cache Toolchain
+  #     run: |
+  #       # Your build steps here
+  #       ls
+  #       pwd
+  #       echo "Building toolchain..."
+  #       mkdir -p toolchain
+  #       echo "testing cache" > toolchain/cache.txt
+  #       # ... more build steps ...
+
+  #   - name: Cache Toolchain
+  #     uses: actions/cache@v3
+  #     with:
+  #       path: toolchain
+  #       key: ${{ runner.os }}-toolchain-${{ hashFiles('toolchain') }}
+  
+  use_cache:
+    runs-on: ubuntu-latest
+
     steps:
-    # - name: Checkout Repository
-    #   uses: actions/checkout@v4
+    - name: Checkout Repository
+      uses: actions/checkout@v3
 
-    - name: Build and Cache Toolchain
-      run: |
-        # Your build steps here
-        ls
-        pwd
-        echo "Building toolchain..."
-        mkdir -p toolchain
-        echo "testing cache" > toolchain/cache.txt
-        # ... more build steps ...
-
-    - name: Cache Toolchain
+    - name: Restore Cached Toolchain
       uses: actions/cache@v3
       with:
         path: toolchain
         key: ${{ runner.os }}-toolchain-${{ hashFiles('toolchain') }}
+        restore-keys: |
+          ${{ runner.os }}-toolchain-
+
+    - name: Use Cached Toolchain
+      run: |
+        # Your steps that use the cached toolchain
+        echo "Using cached toolchain..."
+        ls .
+        ls toolchain
+        cat toolchain/cache.txt
