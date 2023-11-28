@@ -13,6 +13,14 @@ jobs:
     - name: Print Hello World
       run: |
         echo "hello world"
-        echo "test123"
+        echo "test123" > doc/test.txt
 
     - run: cmake --version
+
+    - name: upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist-without-markdown
+        path: |
+          doc
+          !doc/**/*.md
