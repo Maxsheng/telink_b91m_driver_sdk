@@ -8,7 +8,7 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Print Hello World
       run: |
@@ -24,3 +24,27 @@ jobs:
         path: |
           doc
           !doc/**/*.md
+        retention-days: 5
+        
+  build_cache:
+    runs-on: ubuntu-latest
+    
+    steps:
+    # - name: Checkout Repository
+    #   uses: actions/checkout@v4
+
+    - name: Build and Cache Toolchain
+      run: |
+        # Your build steps here
+        ls
+        pwd
+        echo "Building toolchain..."
+        mkdir -p toolchain
+        echo "testing cache" > toolchain/cache.txt
+        # ... more build steps ...
+
+    - name: Cache Toolchain
+      uses: actions/cache@v4
+      with:
+        path: toolchain
+        key: ${{ runner.os }}-toolchain-${{ hashFiles('toolchain') }}
