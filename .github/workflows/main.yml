@@ -1,7 +1,7 @@
 name: CI
 
-# on: [push, pull_request]
-on: workflow_dispatch
+on: [push, pull_request]
+# on: workflow_dispatch
 
 jobs:
 #   build:
@@ -42,10 +42,12 @@ jobs:
         key: ${{ runner.os }}-nds32le-elf-mculib-v5f-${{ hashFiles('./.github/nds_toolchain_version') }}
         restore-keys: |
           ${{ runner.os }}-nds32le-elf-mculib-v5f-
+
+    - run: |
+        echo $steps.cache-npm.outputs.cache-hit
      
-    - if: ${{ steps.cache-npm.outputs.cache-hit == 'true' }}
+    - if: ${{ steps.Restore_Cached_Toolchain.outputs.cache-hit == 'true' }}
       name: build cache toolchain
-      continue-on-error: true
       run: |
         echo "restore toolchain cache successfully"
         exit 0
