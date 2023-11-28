@@ -44,7 +44,7 @@ jobs:
         # ... more build steps ...
 
     - name: Cache Toolchain
-      uses: actions/cache@v4
+      uses: actions/cache@v3
       with:
         path: toolchain
         key: ${{ runner.os }}-toolchain-${{ hashFiles('toolchain') }}
