@@ -59,7 +59,7 @@ jobs:
     - name: Restore Cached Toolchain
       uses: actions/cache@v3
       with:
-        path: toolchain
+        path: toolchain/cache.txt
         key: ${{ runner.os }}-toolchain-${{ hashFiles('toolchain') }}
         restore-keys: |
           ${{ runner.os }}-toolchain-
