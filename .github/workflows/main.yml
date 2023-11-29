@@ -1,7 +1,7 @@
-name: CI
+name: Linux_Build
 
-on: [push, pull_request]
-# on: workflow_dispatch
+# on: [push, pull_request]
+on: workflow_dispatch
 
 jobs:
 #   build:
@@ -27,7 +27,7 @@ jobs:
 #           !doc/**/*.md
 #         retention-days: 5
         
-  build_toolchain_cache:
+  Linux_CMake_Build:
     runs-on: ubuntu-latest
     
     steps:
@@ -49,27 +49,13 @@ jobs:
     - if: ${{ steps.Restore_Cached_Toolchain.outputs.cache-hit != 'true' }}
       name: download and decompression toolchain
       run: |
-        wget -O riscv.tar https://github.com/andestech/Andes-Development-Kit/releases/download/ast-v3_2_3-release-linux/nds32le-elf-mculib-v5f.txz
+        wget -O riscv.tar https://github.com/andestech/Andes-Development-Kit/releases/download/ast-v5_1_2-release-linux/nds32le-elf-mculib-v5f.txz
         tar xf riscv.tar
         if [ $? != 0 ]; then
           echo "download toolchain fail"
           exit 1
         fi
         
-        
-    # - name: download and decompression toolchain
-    #   run: |
-    #     echo "download and decompression toolchain"
-    #     # # Your build steps here
-    #     # pwd
-    #     # ls .
-    #     # wget -O riscv.tar https://github.com/andestech/Andes-Development-Kit/releases/download/ast-v3_2_3-release-linux/nds32le-elf-mculib-v5f.txz
-    #     # ls .
-    #     # tar xf riscv.tar
-    #     # ls .
-    #     # cd nds32le-elf-mculib-v5f
-    #     # ls .
-
     - if: ${{ steps.Restore_Cached_Toolchain.outputs.cache-hit != 'true' }}
       name: Cache Toolchain
       uses: actions/cache@v3
