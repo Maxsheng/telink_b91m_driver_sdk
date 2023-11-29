@@ -44,33 +44,46 @@ jobs:
           ${{ runner.os }}-nds32le-elf-mculib-v5f-
 
     - run: |
-        echo $steps.cache-npm.outputs.cache-hit
+        echo $steps.Restore_Cached_Toolchain.outputs.cache-hit
      
-    - if: ${{ steps.Restore_Cached_Toolchain.outputs.cache-hit == 'true' }}
-      name: build cache toolchain
+    - if: ${{ steps.Restore_Cached_Toolchain.outputs.cache-hit != 'true' }}
+      name: download and decompression toolchain
       run: |
-        echo "restore toolchain cache successfully"
-        return 0
+        wget -O riscv.tar https://github.com/andestech/Andes-Development-Kit/releases/download/ast-v3_2_3-release-linux/nds32le-elf-mculib-v5f.txz
+        tar xf riscv.tar
+        if [ $? != 0 ]; then
+          echo "download toolchain fail"
+          exit 1
+        fi
         
-    - name: download and decompression toolchain
-      run: |
-        echo "download and decompression toolchain"
-        # # Your build steps here
-        # pwd
-        # ls .
-        # wget -O riscv.tar https://github.com/andestech/Andes-Development-Kit/releases/download/ast-v3_2_3-release-linux/nds32le-elf-mculib-v5f.txz
-        # ls .
-        # tar xf riscv.tar
-        # ls .
-        # cd nds32le-elf-mculib-v5f
-        # ls .
+        
+    # - name: download and decompression toolchain
+    #   run: |
+    #     echo "download and decompression toolchain"
+    #     # # Your build steps here
+    #     # pwd
+    #     # ls .
+    #     # wget -O riscv.tar https://github.com/andestech/Andes-Development-Kit/releases/download/ast-v3_2_3-release-linux/nds32le-elf-mculib-v5f.txz
+    #     # ls .
+    #     # tar xf riscv.tar
+    #     # ls .
+    #     # cd nds32le-elf-mculib-v5f
+    #     # ls .
 
-    - name: Cache Toolchain
+    - if: ${{ steps.Restore_Cached_Toolchain.outputs.cache-hit != 'true' }}
+      name: Cache Toolchain
       uses: actions/cache@v3
       with:
         path: nds32le-elf-mculib-v5f
         key: ${{ runner.os }}-nds32le-elf-mculib-v5f-${{ hashFiles('./.github/nds_toolchain_version') }}
-  
+
+    - name: convert cdt2cmake
+      run: |
+        echo "convert cdt2cmkae"
+
+    - name: cmake build
+      run: |
+        echo "cmake building..."
   # use_cache:
   #   runs-on: ubuntu-latest
 
