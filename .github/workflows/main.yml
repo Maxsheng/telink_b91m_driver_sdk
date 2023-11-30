@@ -74,6 +74,7 @@ jobs:
     - name: convert cdt2cmake
       run: |
         echo "convert cdt2cmkae"
+        ./cdt2cmake -h
         ls .
 
     - name: cmake build
