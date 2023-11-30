@@ -38,13 +38,12 @@ jobs:
       id: Restore_Cached_Toolchain
       uses: actions/cache@v3
       with:
-        path: nds32le-elf-mculib-v5f
+        path: |
+          nds32le-elf-mculib-v5f
+          cdt2cmake
         key: ${{ runner.os }}-nds32le-elf-mculib-v5f-${{ hashFiles('./.github/nds_toolchain_version') }}
         restore-keys: |
           ${{ runner.os }}-nds32le-elf-mculib-v5f-
-
-    - run: |
-        echo $steps.Restore_Cached_Toolchain.outputs.cache-hit
      
     - if: ${{ steps.Restore_Cached_Toolchain.outputs.cache-hit != 'true' }}
       name: download and decompression toolchain
@@ -56,16 +55,26 @@ jobs:
           exit 1
         fi
         
+        wget -O cdt2cmake.tar http://wiki.telink-semi.cn/tools_and_sdk/others/cdt2cmake.tar    
+        tar xf cdt2cmake.tar
+        if [ $? != 0 ]; then
+          echo "download cdt2cmake fail"
+          exit 1
+        fi
+        
     - if: ${{ steps.Restore_Cached_Toolchain.outputs.cache-hit != 'true' }}
       name: Cache Toolchain
       uses: actions/cache@v3
       with:
-        path: nds32le-elf-mculib-v5f
+        path: |
+          nds32le-elf-mculib-v5f
+          cdt2cmake
         key: ${{ runner.os }}-nds32le-elf-mculib-v5f-${{ hashFiles('./.github/nds_toolchain_version') }}
 
     - name: convert cdt2cmake
       run: |
         echo "convert cdt2cmkae"
+        ls .
 
     - name: cmake build
       run: |
