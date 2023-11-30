@@ -74,12 +74,15 @@ jobs:
     - name: convert cdt2cmake
       run: |
         echo "convert cdt2cmkae"
-        ./cdt2cmake -h
+        ./cdt2cmake -c ./project/tlsr_riscv/B92/.cproject
         ls .
 
     - name: cmake build
       run: |
         echo "cmake building..."
+        ls . 
+        cmake . -Bcmake_build -DTOOLCHAIN_PATH="`pwd`/nds32le-elf-mculib-v5f"
+        cmake --build . --target GPIO_Demo
   # use_cache:
   #   runs-on: ubuntu-latest
 
