@@ -82,7 +82,7 @@ jobs:
         echo "cmake building..."
         ls . 
         cmake . -Bcmake_build -DTOOLCHAIN_PATH="`pwd`/nds32le-elf-mculib-v5f"
-        cmake --build . --target GPIO_Demo
+        cmake --build cmake_build --target GPIO_Demo
   # use_cache:
   #   runs-on: ubuntu-latest
 
