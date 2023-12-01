@@ -1,8 +1,13 @@
 name: Linux_Build
 
 # on: [push, pull_request]
-on: workflow_dispatch
-
+on: 
+  workflow_dispatch:
+    inputs:
+      parameter_name:
+        description: 'Description of the parameter'
+        required: true
+        default: 'default_value'
 jobs:
 #   build:
 #     runs-on: ubuntu-latest
