@@ -70,7 +70,7 @@ jobs:
     - name: convert cdt2cmake
       run: |
         echo "convert cdt2cmkae"
-        ./cdt2cmake -c ./project/tlsr_riscv/B92/.cproject
+        ./cdt2cmake -c ${{ github.event.inputs.cproject }}
 
     - name: cmake build
       run: |
@@ -84,5 +84,5 @@ jobs:
       with:
         name: build_artifact
         path: |
-          cmake_build/*.bin
+          cmake_build/${{ github.event.inputs.target }}*
         retention-days: 3
