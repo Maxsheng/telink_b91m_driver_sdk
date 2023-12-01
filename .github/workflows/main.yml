@@ -6,14 +6,14 @@ on:
     inputs:
       cproject:
         description: |
-          'Specify the cproject path, which will be used to convert to cmake build, as follow,'
+          'Select the compiled project, cproject path'
           './project/tlsr_riscv/B92/.cproject'
           './project/tlsr_riscv/B91/.cproject'
         required: false
         default: './project/tlsr_riscv/B92/.cproject'
       target:
         description: |
-          'Specify cmake --target parameters, as follow,'
+          'Select the compiled configuration'
           'GPIO_Demo Debug_Demo I2C_Demo'
         required: false
         default: 'GPIO_Demo'
@@ -23,7 +23,7 @@ jobs:
     
     steps:
     - name: check parameters
-    - run: |
+      run: |
         echo "cproject ${{ github.event.inputs.cproject }}"
         echo "target ${{ github.event.inputs.target }}"
 
