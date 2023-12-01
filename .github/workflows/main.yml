@@ -9,13 +9,13 @@ on:
           'Select the compiled project, cproject path'
           './project/tlsr_riscv/B92/.cproject'
           './project/tlsr_riscv/B91/.cproject'
-        required: false
+        required: true
         default: './project/tlsr_riscv/B92/.cproject'
       target:
         description: |
           'Select the compiled configuration'
           'GPIO_Demo Debug_Demo I2C_Demo'
-        required: false
+        required: true
         default: 'GPIO_Demo'
 jobs:
   Linux_CMake_Build:
@@ -37,9 +37,9 @@ jobs:
         path: |
           nds32le-elf-mculib-v5f
           cdt2cmake
-        key: ${{ runner.os }}-nds32le-elf-mculib-v5f-${{ hashFiles('./.github/nds_toolchain_version') }}
+        key: ${{ runner.os }}-toolchain-v512
         restore-keys: |
-          ${{ runner.os }}-nds32le-elf-mculib-v5f-
+          ${{ runner.os }}-toolchain-
      
     - if: ${{ steps.Restore_Cached_Toolchain.outputs.cache-hit != 'true' }}
       name: download and decompression toolchain
@@ -65,7 +65,7 @@ jobs:
         path: |
           nds32le-elf-mculib-v5f
           cdt2cmake
-        key: ${{ runner.os }}-nds32le-elf-mculib-v5f-${{ hashFiles('./.github/nds_toolchain_version') }}
+        key: ${{ runner.os }}-toolchain-v512
 
     - name: convert cdt2cmake
       run: |
