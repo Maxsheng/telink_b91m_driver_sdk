@@ -4,10 +4,10 @@ name: Linux_Build
 on: 
   workflow_dispatch:
     inputs:
-      parameter_name:
-        description: 'Description of the parameter'
-        required: true
-        default: 'default_value'
+      target:
+        description: 'cmake --target'
+        required: false
+        default: ''
 jobs:
 #   build:
 #     runs-on: ubuntu-latest
@@ -85,8 +85,8 @@ jobs:
       run: |
         echo "cmake building..."
         cmake . -Bcmake_build -DTOOLCHAIN_PATH="`pwd`/nds32le-elf-mculib-v5f"
-        echo "parameter_name ${parameter_name}"
-        cmake --build cmake_build --target GPIO_Demo
+        echo "parameter_name ${{ github.event.inputs.target }}"
+        cmake --build cmake_build --target "${{ github.event.inputs.target }}"
 
     - name: upload artifacts
       uses: actions/upload-artifact@v3
