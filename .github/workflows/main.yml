@@ -80,13 +80,12 @@ jobs:
       run: |
         echo "convert cdt2cmkae"
         ./cdt2cmake -c ./project/tlsr_riscv/B92/.cproject
-        ls .
 
     - name: cmake build
       run: |
         echo "cmake building..."
-        ls . 
         cmake . -Bcmake_build -DTOOLCHAIN_PATH="`pwd`/nds32le-elf-mculib-v5f"
+        echo "parameter_name ${parameter_name}"
         cmake --build cmake_build --target GPIO_Demo
 
     - name: upload artifacts
