@@ -77,7 +77,7 @@ jobs:
         echo "cmake building..."
         cmake . -Bcmake_build -DTOOLCHAIN_PATH="`pwd`/nds32le-elf-mculib-v5f"
         echo "parameter_name ${{ github.event.inputs.target }}"
-        cmake --build cmake_build --target "${{ github.event.inputs.target }}"
+        cmake --build cmake_build --target "${{ github.event.inputs.target }}" -j16
 
     - name: upload artifacts
       uses: actions/upload-artifact@v3
